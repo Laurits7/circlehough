@@ -1,5 +1,5 @@
 import numpy as np
-from hough_transformation import hough_transform_ring
+from .hough_transformation import hough_transform_ring
 
 
 def get_bin_centers(
@@ -35,7 +35,7 @@ def advanced_guess_with_hough(
     cx_bin_centers, cy_bin_centers, r_bin_centers = (
         get_bin_centers(guessed_cx, guessed_cy, guessed_r, uncertainty)
     )
-    epsilon = epsilon.astype(np.float32)
+    epsilon = np.float32(epsilon)
     cx_bin_centers = cx_bin_centers.astype(np.float32)
     cy_bin_centers = cy_bin_centers.astype(np.float32)
     r_bin_centers = r_bin_centers.astype(np.float32)

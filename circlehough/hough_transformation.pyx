@@ -70,6 +70,24 @@ cdef np.float32_t sum_photon_contributions(
     return total_amplitude
 
 
+def py_sum_photon_contributions(
+    photon_positions,
+    cx,
+    cy,
+    r,
+    hough_epsilon
+):
+    total_amplitude = sum_photon_contributions(
+        photon_positions,
+        cx,
+        cy,
+        r,
+        hough_epsilon
+    )
+    return total_amplitude
+
+
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef np.float32_t apply_triangular_evaluation(
@@ -92,6 +110,21 @@ cdef np.float32_t apply_triangular_evaluation(
     return photon_contribution
 
 
+def py_apply_triangular_evaluation(
+    r_photon,
+    hough_epsilon,
+    ring_radius,
+    amplitude
+):
+    photon_contribution = apply_triangular_evaluation(
+        r_photon,
+        hough_epsilon,
+        ring_radius,
+        amplitude
+    )
+    return photon_contribution
+
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef np.float32_t calculate_photon_distance(
@@ -103,4 +136,19 @@ cdef np.float32_t calculate_photon_distance(
     cdef np.float32_t x_pos = photon_x-ring_cx
     cdef np.float32_t y_pos = photon_y-ring_cy
     cdef np.float32_t r_photon = sqrt(x_pos**2 + y_pos**2)
+    return r_photon
+
+
+def py_calculate_photon_distance(
+    ring_cx,
+    ring_cy,
+    photon_x,
+    photon_y
+):
+    r_photon = calculate_photon_distance(
+        ring_cx,
+        ring_cy,
+        photon_x,
+        photon_y
+    )
     return r_photon

@@ -1,11 +1,15 @@
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import cythonize
+import os
+
+
 
 
 extensions = [
     Extension(
-        'circlehough.hough_transformation', ['hough_transformation.pyx'],
+        'circlehough.hough_transformation',
+        sources=[os.path.join('circlehough','hough_transformation.pyx')],
     ),
 ]
 

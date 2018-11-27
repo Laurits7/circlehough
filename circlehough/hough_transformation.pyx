@@ -31,7 +31,7 @@ def hough_transform_ring(
         for i_cy in range(cy_max):
             for i_r in range(r_max):
                 i_r +=1
-                contribution = sum_photon_contributions(
+                contribution = sum_point_contributions(
                     point_positions, 
                     cx_bin_centers[i_cx],
                     cy_bin_centers[i_cy], 
@@ -44,41 +44,41 @@ def hough_transform_ring(
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef np.float32_t sum_photon_contributions(
-    np.ndarray[np.float32_t, ndim=2] photon_positions,
+cdef np.float32_t sum_point_contributions(
+    np.ndarray[np.float32_t, ndim=2] point_positions,
     np.float32_t cx, 
     np.float32_t cy, 
     np.float32_t r, 
     np.float32_t hough_epsilon
 ):
     cdef np.float32_t total_amplitude = 0
-    cdef np.float32_t photon_x
-    cdef np.float32_t photon_y
-    cdef np.float32_t r_photon
-    cdef np.float32_t photon_contribution
-    photon_positions_max = photon_positions.shape[0]
-    for i_photon in range(photon_positions_max):
-        photon_x = photon_positions[i_photon, 0]
-        photon_y = photon_positions[i_photon, 1]
-        r_photon = calculate_photon_distance(
+    cdef np.float32_t point_x
+    cdef np.float32_t point_y
+    cdef np.float32_t r_point
+    cdef np.float32_t point_contribution
+    point_positions_max = point_positions.shape[0]
+    for i_point in range(point_positions_max):
+        point_x = point_positions[i_point, 0]
+        point_y = point_positions[i_point, 1]
+        r_point = calculate_point_distance(
             ring_cx=cx, ring_cy=cy,
-            photon_x=photon_x, photon_y=photon_y)
-        photon_contribution = apply_triangular_evaluation(
+            point_x=point_x, point_y=point_y)
+        point_contribution = apply_triangular_evaluation(
             ring_radius=r, amplitude=1,
-            r_photon=r_photon, hough_epsilon=hough_epsilon)
-        total_amplitude += photon_contribution
+            r_point=r_point, hough_epsilon=hough_epsilon)
+        total_amplitude += point_contribution
     return total_amplitude
 
 
-def py_sum_photon_contributions(
-    photon_positions,
+def py_sum_point_contributions(
+    point_positions,
     cx,
     cy,
     r,
     hough_epsilon
 ):
-    total_amplitude = sum_photon_contributions(
-        photon_positions,
+    total_amplitude = sum_point_contributions(
+        point_positions,
         cx,
         cy,
         r,
@@ -91,64 +91,64 @@ def py_sum_photon_contributions(
 @cython.boundscheck(False)
 @cython.wraparound(False)
 cdef np.float32_t apply_triangular_evaluation(
-    np.float32_t r_photon,
+    np.float32_t r_point,
     np.float32_t hough_epsilon,
     np.float32_t ring_radius,
     np.float32_t amplitude
 ):
     cdef np.float32_t abs_loc
-    cdef np.float32_t photon_contribution
+    cdef np.float32_t point_contribution
     if (
-        r_photon > ring_radius-hough_epsilon and
-        r_photon < ring_radius+hough_epsilon
+        r_point > ring_radius-hough_epsilon and
+        r_point < ring_radius+hough_epsilon
     ):
-        abs_loc = abs(r_photon-ring_radius)
-        photon_contribution = amplitude*(
+        abs_loc = abs(r_point-ring_radius)
+        point_contribution = amplitude*(
             hough_epsilon-abs_loc)/(hough_epsilon)
     else:
-        photon_contribution = 0
-    return photon_contribution
+        point_contribution = 0
+    return point_contribution
 
 
 def py_apply_triangular_evaluation(
-    r_photon,
+    r_point,
     hough_epsilon,
     ring_radius,
     amplitude
 ):
-    photon_contribution = apply_triangular_evaluation(
-        r_photon,
+    point_contribution = apply_triangular_evaluation(
+        r_point,
         hough_epsilon,
         ring_radius,
         amplitude
     )
-    return photon_contribution
+    return point_contribution
 
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef np.float32_t calculate_photon_distance(
+cdef np.float32_t calculate_point_distance(
     np.float32_t ring_cx,
     np.float32_t ring_cy,
-    np.float32_t photon_x,
-    np.float32_t photon_y
+    np.float32_t point_x,
+    np.float32_t point_y
 ):
-    cdef np.float32_t x_pos = photon_x-ring_cx
-    cdef np.float32_t y_pos = photon_y-ring_cy
-    cdef np.float32_t r_photon = sqrt(x_pos**2 + y_pos**2)
-    return r_photon
+    cdef np.float32_t x_pos = point_x-ring_cx
+    cdef np.float32_t y_pos = point_y-ring_cy
+    cdef np.float32_t r_point = sqrt(x_pos**2 + y_pos**2)
+    return r_point
 
 
-def py_calculate_photon_distance(
+def py_calculate_point_distance(
     ring_cx,
     ring_cy,
-    photon_x,
-    photon_y
+    point_x,
+    point_y
 ):
-    r_photon = calculate_photon_distance(
+    r_point = calculate_point_distance(
         ring_cx,
         ring_cy,
-        photon_x,
-        photon_y
+        point_x,
+        point_y
     )
-    return r_photon
+    return r_point

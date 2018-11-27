@@ -28,9 +28,9 @@ def test_advanced_guess_with_hough():
     guessed_cy = 1
     guessed_r = 2
     point_cloud  = np.array([
-        [2, 0, 10], [0, 2, 7], [-2, 0, 8], [0, -2, 7], [math.sqrt(2), math.sqrt(2), 6],
-        [math.sqrt(2), -math.sqrt(2), 5], [-math.sqrt(2), math.sqrt(2), 4],
-        [-math.sqrt(2), -math.sqrt(2), 3],
+        [2, 0], [0, 2], [-2, 0], [0, -2],
+        [math.sqrt(2), math.sqrt(2)], [math.sqrt(2), -math.sqrt(2)],
+        [-math.sqrt(2), math.sqrt(2)], [-math.sqrt(2), -math.sqrt(2)],
     ])
     uncertainty = 2
     epsilon = 0.2

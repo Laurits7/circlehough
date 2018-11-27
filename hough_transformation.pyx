@@ -9,11 +9,11 @@ cimport cython
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def hough_transform_ring(
-    np.ndarray[np.float64_t, ndim=2] point_positions,
-    np.ndarray[np.float64_t, ndim=1] cx_bin_centers,
-    np.ndarray[np.float64_t, ndim=1] cy_bin_centers,
-    np.ndarray[np.float64_t, ndim=1] r_bin_centers,
-    np.float64_t hough_epsilon
+    np.ndarray[np.float32_t, ndim=2] point_positions,
+    np.ndarray[np.float32_t, ndim=1] cx_bin_centers,
+    np.ndarray[np.float32_t, ndim=1] cy_bin_centers,
+    np.ndarray[np.float32_t, ndim=1] r_bin_centers,
+    np.float32_t hough_epsilon
 ):
     cdef int i_cx = 0
     cdef int i_cy = 0
@@ -21,11 +21,11 @@ def hough_transform_ring(
     cdef int cx_max = cx_bin_centers.shape[0]
     cdef int cy_max = cy_bin_centers.shape[0]
     cdef int r_max = r_bin_centers.shape[0]
-    cdef np.float64_t cx, cy, r 
-    cdef np.float64_t contribution
-    cdef np.ndarray[np.float64_t, ndim=3] houghSpace = np.zeros(
+    cdef np.float32_t cx, cy, r 
+    cdef np.float32_t contribution
+    cdef np.ndarray[np.float32_t, ndim=3] houghSpace = np.zeros(
         [cx_max, cy_max, r_max],
-        dtype=np.float64
+        dtype=np.float32
     )
     for i_cx in range(cx_max):
         for i_cy in range(cy_max):
@@ -44,18 +44,18 @@ def hough_transform_ring(
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef np.float64_t sum_photon_contributions(
-    np.ndarray[np.float64_t, ndim=2] photon_positions,
-    np.float64_t cx, 
-    np.float64_t cy, 
-    np.float64_t r, 
-    np.float64_t hough_epsilon
+cdef np.float32_t sum_photon_contributions(
+    np.ndarray[np.float32_t, ndim=2] photon_positions,
+    np.float32_t cx, 
+    np.float32_t cy, 
+    np.float32_t r, 
+    np.float32_t hough_epsilon
 ):
-    cdef np.float64_t total_amplitude = 0
-    cdef np.float64_t photon_x
-    cdef np.float64_t photon_y
-    cdef np.float64_t r_photon
-    cdef np.float64_t photon_contribution
+    cdef np.float32_t total_amplitude = 0
+    cdef np.float32_t photon_x
+    cdef np.float32_t photon_y
+    cdef np.float32_t r_photon
+    cdef np.float32_t photon_contribution
     photon_positions_max = photon_positions.shape[0]
     for i_photon in range(photon_positions_max):
         photon_x = photon_positions[i_photon, 0]
@@ -72,14 +72,14 @@ cdef np.float64_t sum_photon_contributions(
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef np.float64_t apply_triangular_evaluation(
-    np.float64_t r_photon,
-    np.float64_t hough_epsilon,
-    np.float64_t ring_radius,
-    np.float64_t amplitude
+cdef np.float32_t apply_triangular_evaluation(
+    np.float32_t r_photon,
+    np.float32_t hough_epsilon,
+    np.float32_t ring_radius,
+    np.float32_t amplitude
 ):
-    cdef np.float64_t abs_loc
-    cdef np.float64_t photon_contribution
+    cdef np.float32_t abs_loc
+    cdef np.float32_t photon_contribution
     if (
         r_photon > ring_radius-hough_epsilon and
         r_photon < ring_radius+hough_epsilon
@@ -94,13 +94,13 @@ cdef np.float64_t apply_triangular_evaluation(
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-cdef np.float64_t calculate_photon_distance(
-    np.float64_t ring_cx,
-    np.float64_t ring_cy,
-    np.float64_t photon_x,
-    np.float64_t photon_y
+cdef np.float32_t calculate_photon_distance(
+    np.float32_t ring_cx,
+    np.float32_t ring_cy,
+    np.float32_t photon_x,
+    np.float32_t photon_y
 ):
-    cdef np.float64_t x_pos = photon_x-ring_cx
-    cdef np.float64_t y_pos = photon_y-ring_cy
-    cdef np.float64_t r_photon = sqrt(x_pos**2 + y_pos**2)
+    cdef np.float32_t x_pos = photon_x-ring_cx
+    cdef np.float32_t y_pos = photon_y-ring_cy
+    cdef np.float32_t r_photon = sqrt(x_pos**2 + y_pos**2)
     return r_photon

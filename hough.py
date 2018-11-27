@@ -35,7 +35,11 @@ def advanced_guess_with_hough(
     cx_bin_centers, cy_bin_centers, r_bin_centers = (
         get_bin_centers(guessed_cx, guessed_cy, guessed_r, uncertainty)
     )
-    point_positions = point_cloud
+    epsilon = epsilon.astype(np.float32)
+    cx_bin_centers = cx_bin_centers.astype(np.float32)
+    cy_bin_centers = cy_bin_centers.astype(np.float32)
+    r_bin_centers = r_bin_centers.astype(np.float32)
+    point_positions = point_cloud.astype(np.float32)
     houghSpace = hough_transform_ring(
         point_positions, cx_bin_centers,
         cy_bin_centers, r_bin_centers, epsilon

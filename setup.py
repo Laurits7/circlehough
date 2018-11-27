@@ -5,8 +5,8 @@ from Cython.Build import cythonize
 
 extensions = [
     Extension(
-        'hough_transformation', ['hough_transformation.pyx'],
-    )
+        'circlehough.hough_transformation', ['hough_transformation.pyx'],
+    ),
 ]
 
 
@@ -18,6 +18,7 @@ setup(
     author='Laurits Tani',
     author_email='laurits.tani@gmail.com',
     licence='MIT',
+    packages=['circlehough'],
     install_requires=[
         'cython',
         'numpy',

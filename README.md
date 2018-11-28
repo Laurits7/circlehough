@@ -7,6 +7,47 @@ Here you find the tools to perform [Hough transform](https://en.wikipedia.org/wi
 ![Triangular weighing function](/images/triangular_weighing.png)
 ![Heavyside weighing used by astropy](/images/heavyside.png)
 
+
+## Installation
+
+```bash
+pip install git+https://github.com/Laurits7/circlehough
+```
+
+## Usage
+
+```python
+# import hough transformation. Importing numpy here only for creating the point cloud.
+from circlehough.hough import advanced_guess_with_hough
+import numpy as np
+# point cloud where circle needs to be found
+point_cloud  = np.array([
+    [2, 0], [0, 2], [-2, 0], [0, -2],
+    [np.sqrt(2), np.sqrt(2)], [np.sqrt(2), -np.sqrt(2)],
+    [-np.sqrt(2), np.sqrt(2)], [-np.sqrt(2), -np.sqrt(2)],
+])
+
+# initial guess for the ring center and radius (if no previous info about those, increase uncertainty accordingly)
+guessed_cx = 0.1
+guessed_cy = 0.1
+guessed_r = 1.9
+
+# uncertainty of the initial guess
+uncertainty = 0.2
+
+# width where points can still be counted to be part of the ring
+epsilon = 0.1
+
+# perform the transformation
+hough_cx, hough_cy, hough_r = advanced_guess_with_hough(
+    guessed_cx, guessed_cy, guessed_r, point_cloud,
+    uncertainty, epsilon
+)
+
+#return found ring center and its radius
+return hough_cx, hough_cy, hough_r
+```
+
 ## Features 
 
 - **Triangular weighing function**: To increase accuracy of the transform instead of Heavyside function with a width epsilon a triangular weighing was used. This reduces the amount of votes given to photons that reside inside the range epsilon, but the further away they are the less they will contribute to the overall votes.

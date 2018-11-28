@@ -10,6 +10,7 @@ extensions = [
     Extension(
         'circlehough.hough_transformation',
         sources=[os.path.join('circlehough','hough_transformation.pyx')],
+        language="c++",
     ),
 ]
 

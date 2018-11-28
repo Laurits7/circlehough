@@ -1,4 +1,5 @@
-# Circle Hough Transform
+# Circle Hough Transform[![Build Status](https://travis-ci.org/Laurits7/circlehough.svg?branch=master)](https://travis-ci.org/Laurits7/circlehough)
+
 
 
 Here you find the tools to perform [Hough transform](https://en.wikipedia.org/wiki/Hough_transform) that detects circles from a 2D point cloud. In contrast with the implementation done by [Astropy](http://docs.astropy.org/en/stable/api/astropy.modeling.functional_models.Ring2D.html), this one uses triangular weighing function.

@@ -2,15 +2,14 @@ from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import cythonize
 import os
-
-
+import numpy as np
 
 
 extensions = [
     Extension(
         'circlehough.hough_transformation',
         sources=[os.path.join('circlehough','hough_transformation.pyx')],
-        language="c++",
+        language="c",
     ),
 ]
 
@@ -29,4 +28,5 @@ setup(
         'numpy',
     ],
     ext_modules=cythonize(extensions),
+    include_dirs=[np.get_include()],
 )

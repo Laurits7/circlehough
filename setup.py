@@ -24,7 +24,7 @@ setup(
     licence='MIT',
     packages=['circlehough'],
     install_requires=[
-        'cython',
+        'Cython',
         'numpy',
     ],
     ext_modules=cythonize(extensions),

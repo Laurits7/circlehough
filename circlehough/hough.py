@@ -52,3 +52,48 @@ def advanced_guess_with_hough(
     hough_cy = cy_bin_centers[hough_cy_idx]
     hough_r = r_bin_centers[hough_r_idx]
     return hough_cx, hough_cy, hough_r
+
+
+def compare_old_new(previous_muon_features, muon_features):
+    old_cx = previous_muon_features['cx']
+    old_cy = previous_muon_features['cy']
+    old_r = previous_muon_features['r']
+    cx = muon_features['cx']
+    cy = muon_features['cy']
+    r = muon_features['r']
+    d_cx = abs(old_cx)-abs(cx)
+    d_cy = abs(old_cy)-abs(cy)
+    d_r = abs(old_r)-abs(r)
+    return d_cx, d_cy, d_r
+
+
+def main(
+    guessed_cx, guessed_cy, guessed_r,
+    point_cloud, uncertainty, epsilon
+):
+    ring_features = {}
+    ring_features['cx'] = guessed_cx
+    ring_features['cy'] = guessed_cy
+    ring_features['r'] = guessed_r
+    i = 0
+    while i < 1000:
+        i += 1
+        previous_ring_features = ring_features.copy()
+        hough_cx, hough_cy, hough_r = advanced_guess_with_hough(
+            ring_features['cx'], ring_features['cy'],
+            ring_features['r'], point_cloud, uncertainty, epsilon)
+        ring_features['cx'] = hough_cx
+        ring_features['cy'] = hough_cy
+        ring_features['r'] = hough_r
+        d_cx, d_cy, d_r = compare_old_new(
+            previous_ring_features, ring_features
+        )
+        uncertainty /= 2
+        if (
+            d_cx <= np.deg2rad(0.05) and
+            d_cy <= np.deg2rad(0.05) and
+            d_r <= np.deg2rad(0.03) and
+            i >= 6
+        ):
+            break
+    return hough_cx, hough_cy, hough_r

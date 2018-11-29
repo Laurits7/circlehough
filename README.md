@@ -4,7 +4,7 @@
 
 Here you find the tools to perform [Hough transform](https://en.wikipedia.org/wiki/Hough_transform) that detects circles from a 2D point cloud. In contrast with the implementation done by [Astropy](http://docs.astropy.org/en/stable/api/astropy.modeling.functional_models.Ring2D.html), this one uses triangular weighing function.
 
-### Triangular weiging function
+### Triangular weighing function
 ![Triangular weighing function](/images/triangular_weighing.png)
 ### Heavyside weighing used by astropy
 ![Heavyside weighing used by astropy](/images/heavyside.png)

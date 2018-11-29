@@ -41,7 +41,7 @@ uncertainty = 0.2
 epsilon = 0.1
 
 # perform the transformation
-hough_cx, hough_cy, hough_r = advanced_guess_with_hough(
+hough_cx, hough_cy, hough_r = main(
     guessed_cx, guessed_cy, guessed_r, point_cloud,
     uncertainty, epsilon
 )

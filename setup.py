@@ -27,6 +27,10 @@ setup(
         'Cython',
         'numpy',
     ],
+    setup_requires=[
+        'Cython',
+        'numpy',
+    ],
     ext_modules=cythonize(extensions),
     include_dirs=[np.get_include()],
 )

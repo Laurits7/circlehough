@@ -20,7 +20,7 @@ pip install git+https://github.com/Laurits7/circlehough
 
 ```python
 # import hough transformation. Importing numpy here only for creating the point cloud.
-from circlehough.hough import advanced_guess_with_hough
+from circlehough.hough import main
 import numpy as np
 # point cloud where circle needs to be found
 point_cloud  = np.array([

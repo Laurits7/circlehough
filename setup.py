@@ -3,12 +3,24 @@ from distutils.extension import Extension
 from Cython.Build import cythonize
 import os
 import numpy as np
+from setuptools import Command
 
+
+class ChooseVersion(Command):
+    description='Choose install version. For developer choose "dev", default:"user"'
+    user_options=[
+        ('version="user"', 'v', 'package version')
+    ]
+    if self.version=='dev':
+        ext = '.pyx' if USE_CYTHON else '.c'
+        from Cython.Build import cythonize
+        extensions = cythonize(extensions)
+    
 
 extensions = [
     Extension(
         'circlehough.hough_transformation',
-        sources=[os.path.join('circlehough','hough_transformation.pyx')],
+        sources=[os.path.join('circlehough','hough_transformation'+ext)],
         language="c",
     ),
 ]
@@ -27,6 +39,6 @@ setup(
         'Cython',
         'numpy',
     ],
-    ext_modules=cythonize(extensions),
+    ext_modules=extensions,
     include_dirs=[np.get_include()],
 )

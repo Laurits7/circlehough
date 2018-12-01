@@ -11,10 +11,12 @@ class ChooseVersion(Command):
     user_options=[
         ('version="user"', 'v', 'package version')
     ]
-    if self.version=='dev':
-        ext = '.pyx' if USE_CYTHON else '.c'
+    if version=='dev':
+        ext = '.pyx'
         from Cython.Build import cythonize
         extensions = cythonize(extensions)
+    else:
+        ext='.c'
     
 
 extensions = [

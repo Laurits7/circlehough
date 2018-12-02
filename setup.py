@@ -33,7 +33,10 @@ class ChooseVersion(Command):
                     sources=[os.path.join('circlehough','hough_transformation.c')],
                     language="c",
                 ),
-            ]            
+            ]
+    self.initialize_options()
+    self.finalize_options()
+    self.run()
 
 
 setup(

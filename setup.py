@@ -42,6 +42,9 @@ setup(
         'Cython',
         'numpy',
     ],
+    cmdclass={
+        'gen_images': ChooseVersion,
+    },
     ext_modules=extensions,
     include_dirs=[np.get_include()],
 )

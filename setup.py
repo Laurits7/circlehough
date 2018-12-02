@@ -11,6 +11,13 @@ class ChooseVersion(Command):
     user_options=[
         ('version="user"', 'v', 'package version')
     ]
+    extensions = [
+        Extension(
+            'circlehough.hough_transformation',
+            sources=[os.path.join('circlehough','hough_transformation'+ext)],
+            language="c",
+        ),
+    ]
     def __init__(self):
         if self.version=='dev':
             ext = '.pyx'
@@ -18,16 +25,6 @@ class ChooseVersion(Command):
             extensions = cythonize(extensions)
         else:
             ext='.c'
-    
-
-extensions = [
-    Extension(
-        'circlehough.hough_transformation',
-        sources=[os.path.join('circlehough','hough_transformation'+ext)],
-        language="c",
-    ),
-]
-
 
 setup(
     name="circlehough",

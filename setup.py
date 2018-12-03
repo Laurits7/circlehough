@@ -15,7 +15,7 @@ ext = '.pyx' if USE_CYTHON else '.c'
 extensions = [
     Extension(
         'circlehough.hough_transformation',
-        sources='circlehough/hough_transformation'+ext)],
+        sources=['circlehough/hough_transformation'+ext],
     ),
 ]
 

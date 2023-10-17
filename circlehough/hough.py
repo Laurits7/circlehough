@@ -24,7 +24,7 @@ def interpretHoughSpace(
     houghSpace
 ):
     indices_of_maximum_value = np.unravel_index(
-        np.argmax(houghSpace), dims=houghSpace.shape)
+        np.argmax(houghSpace), shape=houghSpace.shape)
     return indices_of_maximum_value
 
 
@@ -69,14 +69,15 @@ def compare_old_new(previous_muon_features, muon_features):
 
 def main(
     guessed_cx, guessed_cy, guessed_r,
-    point_cloud, uncertainty, epsilon
+    point_cloud, uncertainty, epsilon,
+    max_iter=100
 ):
     ring_features = {}
     ring_features['cx'] = guessed_cx
     ring_features['cy'] = guessed_cy
     ring_features['r'] = guessed_r
     i = 0
-    while i < 1000:
+    while i < max_iter:
         i += 1
         previous_ring_features = ring_features.copy()
         hough_cx, hough_cy, hough_r = advanced_guess_with_hough(
